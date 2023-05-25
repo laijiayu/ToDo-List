@@ -5,9 +5,10 @@ const list = document.querySelector(".list")
 //新增代辦項目
 let addListItem = (e) => {
   const text = inputText.value
-  if (e.type == "keydown" && e.key !== "Enter") {
+  if (e.key !== "Enter") {
     return
   }
+
   if (text.trim() == "") {
     alert("🍰請輸入代辦事項✨")
   } else {
@@ -17,13 +18,13 @@ let addListItem = (e) => {
       checked: "",
     }
     data.push(obj)
+    inputText.value = ""
     updateData()
     saveData()
-    inputText.value = ""
   }
 }
-inputText.addEventListener("keydown", addListItem)
 addBtn.addEventListener("click", addListItem)
+inputText.addEventListener("keyup", addListItem)
 
 //資料初始化渲染
 let data = []
@@ -81,23 +82,20 @@ list.addEventListener("click", deleted)
 //tab切換更新代辦清單
 const filterMapping = {
   all: () => data,
-  uncompleted: (item) => item.checked == "",
-  completed: (item) => item.checked == "checked",
+  uncompleted: (item) => item.checked === "",
+  completed: (item) => item.checked === "checked",
 }
 
 let updateData = () => {
   let listData = data.filter(filterMapping[tabChange])
-  const uncompletedNum = data.filter((item) => item.checked == "").length
-  console.log(listData)
+  const uncompletedNum = data.filter((item) => item.checked === "").length
   document.querySelector(".uncompletedNum").textContent = uncompletedNum
-  console.log(uncompletedNum)
   renderData(listData)
   saveData()
 }
 
 //清除已完成的項目
 const deleteCompletedBtn = document.querySelector(".deleteCompletedBtn")
-console.log(deleteCompletedBtn)
 
 deleteCompletedBtn.addEventListener("click", (e) => {
   e.preventDefault()
