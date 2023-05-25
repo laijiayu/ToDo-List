@@ -9,10 +9,11 @@ html {
   font-size: 16px;
   -webkit-tap-highlight-color: transparent;
 }
-$default: #ffd370;
+$default: #EAC5D8;
 $dark: #333;
 $gray: #9f9a91;
 $light: #efefef;
+$purple: #DBD8F0;
 body {
   min-height: 100vh;
   background: #eee;
@@ -80,9 +81,10 @@ input[type="text"] {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: $dark;
-  color: #fff;
-  font-size: 2rem;
+  background: $purple;
+  color: $gray;
+  font-size: 20px;
+  font-weight: 800;
   text-decoration: none;
 }
 
@@ -96,6 +98,7 @@ input[type="text"] {
   text-align: center;
   color: $gray;
   font-size: 14px;
+  cursor: pointer;
   li {
     padding: 1rem;
     width: 100%;
