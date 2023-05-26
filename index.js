@@ -5,7 +5,8 @@ const list = document.querySelector(".list")
 //新增代辦項目
 let addListItem = (e) => {
   const text = inputText.value
-  if (e.key !== "Enter") {
+  if (e.type == "keyup" && e.key !== "Enter") {
+    console.log(e)
     return
   }
 
