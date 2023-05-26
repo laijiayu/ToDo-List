@@ -63,6 +63,7 @@ tab.addEventListener("click", changeTabs)
 const deleted = (e) => {
   let id = e.target.closest("li").dataset.index
   if (e.target.className == "delete") {
+    e.preventDefault()
     let li = e.target.getAttribute("data-index")
     data.splice(li, 1)
   } else
