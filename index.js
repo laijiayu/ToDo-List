@@ -6,7 +6,6 @@ const list = document.querySelector(".list")
 let addListItem = (e) => {
   const text = inputText.value
   if (e.type == "keyup" && e.key !== "Enter") {
-    console.log(e)
     return
   }
 
@@ -20,7 +19,13 @@ let addListItem = (e) => {
     }
     data.push(obj)
     inputText.value = ""
-    updateData()
+
+    currentTab = "all"
+    const allTabButton = document.getElementById("all")
+    if (allTabButton) {
+      allTabButton.click()
+      updateData()
+    }
     saveData()
   }
 }
@@ -46,7 +51,7 @@ const renderData = (listData) => {
 
 //切換tab樣式
 const changeTabs = (e) => {
-  tabChange = e.target.dataset.status
+  currentTab = e.target.dataset.status
   let tabs = document.querySelectorAll(".tab li")
   tabs.forEach((item) => {
     item.classList.remove("active")
@@ -56,16 +61,22 @@ const changeTabs = (e) => {
 }
 
 const tab = document.querySelector(".tab")
-let tabChange = "all"
+let currentTab = "all"
 tab.addEventListener("click", changeTabs)
 
 //刪除代辦項目、檢查checked狀態
-const deleted = (e) => {
-  let id = e.target.closest("li").dataset.index
-  if (e.target.className == "delete") {
+const handleListItemClick = (e) => {
+  let id = Number(e.target.closest("li").dataset.index)
+  if (e.target.classList.contains("delete")) {
     e.preventDefault()
-    let li = e.target.getAttribute("data-index")
-    data.splice(li, 1)
+
+    let index = data.findIndex((item) => item.id === id)
+
+    if (index !== -1) {
+      data.splice(index, 1)
+      updateData()
+      saveData()
+    }
   } else
     data.forEach((i, index) => {
       if (i.id == id) {
@@ -79,7 +90,7 @@ const deleted = (e) => {
   updateData()
   saveData()
 }
-list.addEventListener("click", deleted)
+list.addEventListener("click", handleListItemClick)
 
 //tab切換更新代辦清單
 const filterMapping = {
@@ -89,7 +100,7 @@ const filterMapping = {
 }
 
 let updateData = () => {
-  let listData = data.filter(filterMapping[tabChange])
+  let listData = data.filter(filterMapping[currentTab])
   const uncompletedNum = data.filter((item) => item.checked === "").length
   document.querySelector(".uncompletedNum").textContent = uncompletedNum
   renderData(listData)
